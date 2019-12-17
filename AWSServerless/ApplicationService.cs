@@ -17,11 +17,15 @@ namespace AWSServerless
 	{
 		public static void Load(IServiceCollection services, DynamoDbOptions dynamoDbOptions, IAmazonDynamoDB client)
 		{
+			services.AddScoped<ITableDataRepository, TableDataRepository>();
+			services.AddScoped<ITableLogic, TableLogic>();
 			services.AddScoped<IPlayerLogic, PlayerLogic>();
-			//services.AddTransient<IUnitOfWork, UnitOfWork>();
 			services.AddScoped<IPlayerDataService, PlayerDataService>();
 			services.AddScoped<IDynamoDbContext<Player>>(provider => new DynamoDbContext<Player>(client, dynamoDbOptions.Player));
 			services.AddScoped<IDynamoDbContext<Location>>(provider => new DynamoDbContext<Location>(client, dynamoDbOptions.Location));
+
+
+
 		}
 	}
 }

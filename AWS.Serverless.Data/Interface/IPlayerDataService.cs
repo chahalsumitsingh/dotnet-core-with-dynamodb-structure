@@ -8,7 +8,9 @@ namespace AWS.Serverless.Data.Interface
 {
 	public interface IPlayerDataService
 	{
-		Task<Player> GetPlayerAsync(string id);
-		Task<bool> CreatePlayer();
+		Task<Player> GetPlayerAsync(int id);
+		Task<bool> CreatePlayer(Player player);
+		Task<List<Player>> GetAllPlayerAsync();
+		Task<bool> DeleteById(int Id);
 	}
 }

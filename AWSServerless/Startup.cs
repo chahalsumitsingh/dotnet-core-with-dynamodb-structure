@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
+using AutoMapper;
+using AWS.Serverless.Common.Mapper;
 using AWS.Serverless.Common.Models;
 using AWS.Serverless.DBContext;
 using Microsoft.AspNetCore.Builder;
@@ -36,24 +38,30 @@ namespace AWSServerless
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+			//services.AddAutoMapper(typeof(Startup));
+			var mappingConfig = new MapperConfiguration(mc =>
+			{
+				mc.AddProfile(new MapperProfile());
+			});
+
+			IMapper mapper = mappingConfig.CreateMapper();
+			services.AddSingleton(mapper);
 
 			var dynamoDbConfig = Configuration.GetSection("DynamoDb");
 			var runLocalDynamoDb = dynamoDbConfig.GetValue<bool>("LocalMode");
 
-			
-			//var credentials = new BasicAWSCredentials("test", "test");
-			//AmazonDynamoDBClient  client = new AmazonDynamoDBClient(credentials, RegionEndpoint.APSouth1);
-			////Verify table  
-			//var tableResponse =  client.ListTablesAsync();
-
 			//AWS Setting
 			var awsOptions = Configuration.GetAWSOptions();
-			var awsSettings = Configuration.GetSection("AWS");
-			awsOptions.Profile = "test";
-			awsOptions.DefaultClientConfig.ServiceURL = "http://localhost:8080";
-			
-			awsOptions.Credentials = new BasicAWSCredentials("test", "test");
-			awsOptions.Region = Amazon.RegionEndpoint.APSoutheast1; // awsSettings.GetValue<string>("Region")
+
+			if (runLocalDynamoDb)
+			{
+				var awsSettings = Configuration.GetSection("AWS");
+				awsOptions.Profile = "test";
+				awsOptions.DefaultClientConfig.ServiceURL = "http://localhost:8080";
+
+				awsOptions.Credentials = new BasicAWSCredentials("test", "test");
+				awsOptions.Region = Amazon.RegionEndpoint.APSoutheast1; // awsSettings.GetValue<string>("Region")
+			}
 			services.AddDefaultAWSOptions(awsOptions);
 
 			var client = awsOptions.CreateServiceClient<IAmazonDynamoDB>();
@@ -65,35 +73,17 @@ namespace AWSServerless
 
 			if (runLocalDynamoDb)
 			{
-				//services.AddSingleton<IAmazonDynamoDB>();
 				services.AddSingleton<IAmazonDynamoDB>(sp =>
 				{
-
-					//var clientConfig = new AmazonDynamoDBConfig
-					//{
-					//	ServiceURL = dynamoDbConfig.GetValue<string>("LocalServiceUrl"),
-					//	RegionEndpoint = Amazon.RegionEndpoint.APSouth1
-					//};
-					return client;   //new AmazonDynamoDBClient(clientConfig);
+					return client;
 				});
-
-
-				//services.AddSingleton<IAmazonDynamoDB>(sp =>
-				//{
-				//	var clientConfig = new AmazonDynamoDBConfig
-				//	{
-				//		ServiceURL = dynamoDbConfig.GetValue<string>("LocalServiceUrl"),
-				//		RegionEndpoint = Amazon.RegionEndpoint.APSouth1
-				//	};
-				//	return new AmazonDynamoDBClient(clientConfig);
-				//});
 			}
 			else
 			{
 				services.AddAWSService<IAmazonDynamoDB>();
 			}
 
-
+			//create Initial Table
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Add S3 to the ASP.NET Core dependency injection framework.

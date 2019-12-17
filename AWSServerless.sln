@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWSServerless", "AWSServerl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWS.Serverless.ViewModel", "AWS.Serverless.ViewModel\AWS.Serverless.ViewModel.csproj", "{A34F8838-C392-4BA4-9BD2-50FFA6B05B4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWS.Serverless.Common", "AWS.Serverless.Common\AWS.Serverless.Common.csproj", "{AB52B63E-D839-4A82-9ED4-D78CE2857ED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWS.Serverless.Logic", "AWS.Serverless.Logic\AWS.Serverless.Logic.csproj", "{658B69B0-7F32-48D2-997E-5BBCBD48969B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWS.Serverless.Logic", "AWS.Serverless.Logic\AWS.Serverless.Logic.csproj", "{658B69B0-7F32-48D2-997E-5BBCBD48969B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWS.Serverless.DBContext", "AWS.Serverless.DBContext\AWS.Serverless.DBContext.csproj", "{AAA3B590-DB48-44F9-909D-FF149EAF0D68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWS.Serverless.DBContext", "AWS.Serverless.DBContext\AWS.Serverless.DBContext.csproj", "{AAA3B590-DB48-44F9-909D-FF149EAF0D68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWS.Serverless.Data", "AWS.Serverless.Data\AWS.Serverless.Data.csproj", "{063C2A48-9AF1-4AAF-AA18-FE073F085CD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWS.Serverless.Data", "AWS.Serverless.Data\AWS.Serverless.Data.csproj", "{063C2A48-9AF1-4AAF-AA18-FE073F085CD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWS.Serverless.Common", "AWS.Serverless.Common\AWS.Serverless.Common.csproj", "{826ABB9F-157E-4B56-A456-0BB24DC5EA5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		{A34F8838-C392-4BA4-9BD2-50FFA6B05B4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A34F8838-C392-4BA4-9BD2-50FFA6B05B4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A34F8838-C392-4BA4-9BD2-50FFA6B05B4E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB52B63E-D839-4A82-9ED4-D78CE2857ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB52B63E-D839-4A82-9ED4-D78CE2857ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB52B63E-D839-4A82-9ED4-D78CE2857ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB52B63E-D839-4A82-9ED4-D78CE2857ED1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{658B69B0-7F32-48D2-997E-5BBCBD48969B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{658B69B0-7F32-48D2-997E-5BBCBD48969B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{658B69B0-7F32-48D2-997E-5BBCBD48969B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{063C2A48-9AF1-4AAF-AA18-FE073F085CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{063C2A48-9AF1-4AAF-AA18-FE073F085CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{063C2A48-9AF1-4AAF-AA18-FE073F085CD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{826ABB9F-157E-4B56-A456-0BB24DC5EA5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{826ABB9F-157E-4B56-A456-0BB24DC5EA5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{826ABB9F-157E-4B56-A456-0BB24DC5EA5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{826ABB9F-157E-4B56-A456-0BB24DC5EA5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

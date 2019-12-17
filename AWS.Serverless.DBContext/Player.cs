@@ -23,13 +23,13 @@ namespace AWS.Serverless.DBContext
 		public int Level { get; set; }
 
 		[DynamoDBProperty]
-		public List<Test> Items { get; set; }
+		public List<string> Items { get; set; }
 	}
 
-	public class Test
-	{
-		public string ItemName { get; set; }
+	//public class Test
+	//{
+	//	public string ItemName { get; set; }
 
-		public string ItemValue { get; set; }
-	}
+	//	public string ItemValue { get; set; }
+	//}
 }

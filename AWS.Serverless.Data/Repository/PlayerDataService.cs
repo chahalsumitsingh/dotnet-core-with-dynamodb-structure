@@ -1,4 +1,5 @@
 ﻿using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
 using AWS.Serverless.Data.Interface;
 using AWS.Serverless.DBContext;
@@ -19,29 +20,18 @@ namespace AWS.Serverless.Data.Repository
 		{
 			this.amazonDynamoDB = db;
 			_playerContext = playerContext;
-			this.checkAndCreateTable();
 		}
 
-		public async Task<bool> CreatePlayer()
+		public async Task<bool> CreatePlayer(Player player)
 		{
-			Player pl = new Player();
-			pl.Name = "sumit singh";
-			pl.HitPoints = 20;
-			pl.Gold = 2;
-			pl.Level = 22;
-			pl.Items = new List<Test>();
-			pl.Items.Add(new Test() { ItemName= "hey", ItemValue = "44" });
-			pl.Items.Add(new Test() { ItemName = "hey 2", ItemValue = "44 55" });
-			await _playerContext.SaveAsync(pl);
-
+			await _playerContext.SaveAsync(player);
 			return true;
 		}
 
-		public async Task<Player> GetPlayerAsync(string id)
+		public async Task<Player> GetPlayerAsync(int id)
 		{
 			try
 			{
-
 				return await _playerContext.GetByIdAsync(id);
 			}
 			catch (Exception ex)
@@ -50,44 +40,29 @@ namespace AWS.Serverless.Data.Repository
 			}
 		}
 
-		private async void checkAndCreateTable()
+		public async Task<List<Player>> GetAllPlayerAsync()
 		{
-			var tableResponse = await amazonDynamoDB.ListTablesAsync();
-
-			if (!tableResponse.TableNames.Contains("Player"))
+			try
 			{
-				//Table not found, creating table  
-				await amazonDynamoDB.CreateTableAsync(new CreateTableRequest
+				ScanOperationConfig config = new ScanOperationConfig()
 				{
-					TableName = "Player",
-					ProvisionedThroughput = new ProvisionedThroughput
-					{
-						ReadCapacityUnits = 3,
-						WriteCapacityUnits = 1
-					},
-					KeySchema = new List<KeySchemaElement> {
-							new KeySchemaElement {
-								AttributeName = "Id",
-									KeyType = KeyType.HASH
-							}
-						},
-					AttributeDefinitions = new List<AttributeDefinition> {
-							new AttributeDefinition {
-								AttributeName = "Id",
-								AttributeType = ScalarAttributeType.N
-							}
-						}
-				});
-				bool isTableAvailable = false;
-				while (!isTableAvailable)
-				{
-					//"Waiting for table to be active...  
-					Thread.Sleep(5000);
-					var tableStatus = await amazonDynamoDB.DescribeTableAsync("Player");
-					isTableAvailable = tableStatus.Table.TableStatus == "ACTIVE";
-				}
+					Limit = 2,
+					PaginationToken = "{}"
+				};
+				List<Player> documentList =await _playerContext.FromScanTableAsync(config);
+				return documentList;
+			}
+			catch (Exception ex)
+			{
+
+				throw;
 			}
 		}
 
+		public async Task<bool> DeleteById(int Id)
+		{
+			 await _playerContext.DeleteByIdAsync(Id);
+			return true;
+		}
 	}
 }

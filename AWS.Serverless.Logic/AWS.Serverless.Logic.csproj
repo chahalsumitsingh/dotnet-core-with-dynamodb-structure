@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AWS.Serverless.Data\AWS.Serverless.Data.csproj" />
+    <ProjectReference Include="..\AWS.Serverless.ViewModel\AWS.Serverless.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

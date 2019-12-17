@@ -1,5 +1,8 @@
-﻿using AWS.Serverless.Data.Interface;
+﻿using AutoMapper;
+using AWS.Serverless.Data.Interface;
+using AWS.Serverless.DBContext;
 using AWS.Serverless.Logic.Interface;
+using AWS.Serverless.ViewModel.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,24 +12,35 @@ namespace AWS.Serverless.Logic.Repository
 {
 	public class PlayerLogic : IPlayerLogic
 	{
+		private readonly IMapper mapper;
 		public IPlayerDataService playerDataService { get; }
-		public PlayerLogic(IPlayerDataService playerDataService)
+		public PlayerLogic(IPlayerDataService playerDataService, IMapper mapper)
 		{
 			this.playerDataService = playerDataService;
+			this.mapper = mapper;
 		}
 
-		public bool getAll()
+		public async Task<PlayerViewModel> getById(int id)
 		{
-			playerDataService.GetPlayerAsync("22");
-			return true;
+			Player player =await playerDataService.GetPlayerAsync(id);
+			return mapper.Map<PlayerViewModel>(player);
 		}
 
-		public async Task<bool> CreatePlayer()
+		public async Task<bool> CreatePlayer(PlayerViewModel playerViewModel)
 		{
-			var isSuccess =await playerDataService.CreatePlayer();
-
-			//throw new NotImplementedException();
+			Player player = mapper.Map<Player>(playerViewModel);
+			bool isSuccess =await playerDataService.CreatePlayer(player);
 			return isSuccess;
+		}
+
+		public async Task<List<PlayerViewModel>> GetAllPlayer()
+		{
+			return mapper.Map<List<PlayerViewModel>>(await playerDataService.GetAllPlayerAsync());
+		}
+
+		public async Task<bool> DeteteById(int Id)
+		{
+			return await playerDataService.DeleteById(Id);
 		}
 	}
 }
