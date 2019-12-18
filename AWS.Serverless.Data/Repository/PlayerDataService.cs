@@ -42,14 +42,32 @@ namespace AWS.Serverless.Data.Repository
 
 		public async Task<List<Player>> GetAllPlayerAsync()
 		{
+			List<Player> documentList = new List<Player>();
 			try
 			{
+				List<AttributeValue> attr = new List<AttributeValue>();
+				attr.Add(new AttributeValue { S = "sumit singh" });
+				ScanFilter filter = new ScanFilter();
+				filter.AddCondition("Name", ScanOperator.Contains, attr);
+
+				List<string> attributesToGet = new List<string>();
+				attributesToGet.Add("Id");
 				ScanOperationConfig config = new ScanOperationConfig()
+
 				{
 					Limit = 2,
-					PaginationToken = "{}"
+					PaginationToken = "{}",
+					Filter = filter,
+					//AttributesToGet = attributesToGet,
+					//Select = SelectValues.SpecificAttributes,
+					TotalSegments = 1
 				};
-				List<Player> documentList =await _playerContext.FromScanTableAsync(config);
+				var item = _playerContext.FromScanTableAsync(config);
+				do
+				{
+					documentList.AddRange(await item.GetNextSetAsync());
+
+				} while (!item.IsDone);
 				return documentList;
 			}
 			catch (Exception ex)

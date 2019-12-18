@@ -48,9 +48,9 @@ namespace AWS.Serverless.DBContext
 			await base.DeleteAsync(item, _config);
 		}
 
-		public async Task<List<T>> FromScanTableAsync(ScanOperationConfig scanOperationConfig)
+		public AsyncSearch<T> FromScanTableAsync(ScanOperationConfig scanOperationConfig)
 		{
-			return  await base.FromScanAsync<T>(scanOperationConfig, _config).GetNextSetAsync();
+			return  base.FromScanAsync<T>(scanOperationConfig, _config);
 		}
 
 

@@ -14,7 +14,7 @@ namespace AWS.Serverless.DBContext
 		Task SaveAsync(T item);
 		Task DeleteByIdAsync(T item);
 		Task DeleteByIdAsync(object item);
-		Task<List<T>> FromScanTableAsync(ScanOperationConfig scanOperationConfig);
+		AsyncSearch<T> FromScanTableAsync(ScanOperationConfig scanOperationConfig);
 
 	}
 }
