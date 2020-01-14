@@ -52,14 +52,24 @@ namespace AWS.Serverless.Data.Repository
 
 				List<string> attributesToGet = new List<string>();
 				attributesToGet.Add("Id");
+
+				var expr = new Expression();
+				expr.ExpressionStatement = "contains(#Name, :Name) and attribute_not_exists(#FullName) or #FullName = :FullName";
+				expr.ExpressionAttributeNames["#FullName"] = "FullName";
+				expr.ExpressionAttributeValues[":FullName"] = "sumit singh";
+
+				expr.ExpressionAttributeNames["#Name"] = "Name";
+				expr.ExpressionAttributeValues[":Name"] = "sumit singh";
 				ScanOperationConfig config = new ScanOperationConfig()
+
 
 				{
 					Limit = 2,
 					PaginationToken = "{}",
-					Filter = filter,
-					//AttributesToGet = attributesToGet,
-					//Select = SelectValues.SpecificAttributes,
+					//Filter = filter,
+					FilterExpression = expr,
+						//AttributesToGet = attributesToGet,
+						//Select = SelectValues.SpecificAttributes,
 					TotalSegments = 1
 				};
 				var item = _playerContext.FromScanTableAsync(config);
@@ -79,7 +89,7 @@ namespace AWS.Serverless.Data.Repository
 
 		public async Task<bool> DeleteById(int Id)
 		{
-			 await _playerContext.DeleteByIdAsync(Id);
+			await _playerContext.DeleteByIdAsync(Id);
 			return true;
 		}
 	}
